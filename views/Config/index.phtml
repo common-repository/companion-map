@@ -1,0 +1,121 @@
+<?php namespace m1\usv; 
+/**
+*	Einstellungsmaske des eigenen Standortes (Hauptsitz) 
+*/
+?>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		
+		jQuery('#get-gps-data').bind("click", function() {
+		 
+			jQuery.ajax({
+				type: 'POST',
+				url: "<?php echo SITECOOKIEPATH.'wp-admin'; ?>/admin.php?page=companion_map-Mitglieder&action=get_gps_data&noheader=1",
+				data: {
+					strasse: jQuery("#strasse").val(),
+					plz: jQuery("#plz").val(),
+					ort: jQuery("#ort").val()
+				},
+				success: function(data)
+				{
+					
+					var result = data.split(',');
+					var lat = result[0];
+					var long = result[1];
+					
+					jQuery("#gps-lat").attr('value',lat);
+					jQuery("#gps-lon").attr('value',long);
+					
+				}
+			});
+			
+			return false;
+		
+		});
+		
+	});
+</script>
+
+<div class="wrap">
+<h2><?php echo __('Einstellungen') ?></h2>
+
+	<div id="ajax-response"></div>
+	
+	<p><?php $this->drawMessages(); ?></p>
+	
+	<h3><?php echo _('Eigener Standort') ?></h3>
+	
+	<p><?php echo __('Hier haben Sie die Möglichkeit, die Daten des Hauptsitzes einzutragen.') ?><br />
+	<?php echo __('Diese Einstellungen werden zur Festlegung des Kartenausschnitts im Frontend genutzt.') ?></p>
+	
+	<form id="edit-config" name="edit-config" method="post" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Config&action=save'; ?>">
+	
+	<table class="form-table">
+		<tbody>
+			<tr>
+				<th scope="row"><label for="strasse"><?php echo __('Adresse') ?> <span class="description"><?php echo __('(erforderlich)') ?></span></label></th>
+				<td><input type="text" class="regular-text code" value="<?php echo @$this->arData['strasse']; ?>" id="strasse" name="config[strasse]" required="required" placeholder="Musterstraße 1"></td>
+			</tr>
+			
+			<tr>
+				<th scope="row"><label for="plz"><?php echo __('PLZ') ?> <span class="description"><?php echo __('(erforderlich)') ?></span></label></th>
+				<td><input type="text" class="regular-text code" value="<?php echo @$this->arData['plz']; ?>" id="plz" name="config[plz]" required="required" pattern="[0-9]{5}" placeholder="99999"></td>
+			</tr>
+			
+			<tr>
+				<th scope="row"><label for="ort"><?php echo __('Ort') ?> <span class="description"><?php echo __('(erforderlich)') ?></span></label></th>
+				<td><input type="text" class="regular-text code" value="<?php echo @$this->arData['ort']; ?>" id="ort" name="config[ort]" required="required" placeholder="Musterstadt"></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2"><p><?php echo __('Für die Darstellung der Daten im Frontend benötigen Sie einen API-Key von Google. ')?><br /> 
+					<a class="button-primary" id="button-google" target="popup" href="https://console.developers.google.com/flows/enableapi?apiid=maps_backend&keyType=CLIENT_SIDE&reusekey=true" onclick="window.open('', 'popup', 'width=500;height=200,resizable=yes,menubar=yes')">
+						<?php echo __('Schlüssel über Ihr Googlekonto anfordern');?>
+					</a>
+				</td>
+			</tr>
+				
+			<tr>
+				<th scope="row"><label for="googlekey"><?php echo __('Google-Key') ?> <span class="description"><?php echo __('(erforderlich)') ?></span></label></th>
+				<td><input type="text" class="regular-text code" value="<?php echo @$this->arData['googlekey']; ?>" id="googlekey" name="config[googlekey]" ></td>
+			</tr>
+						
+			<tr>
+				<td colspan="2"><p><?php echo __('Aufgrund von technischen Problemen kann es zum Misserfolg bei der automatischen ')?><br /> 
+				<?php echo __('Ermittlung der GPS-Koordniaten kommen.') ?><br />
+				<?php echo __('Sie haben zudem die Möglichkeit, die GPS-Daten händisch einzutragen.')?></p></td>
+			</tr>			
+						
+			<tr><td><button id="get-gps-data" class="button-primary"><?php echo __('GPS Daten automatisch ermitteln')?></button></td></tr>
+			
+			<tr>
+				<th scope="row"><label for="gps-lat"><?php echo __('lat') ?> <span class="description"><?php echo __('(GPS Breitengrad)')?></span></label></th>
+				<td><input type="text" class="regular-text code" value="<?php echo @$this->arData['gps-lat']; ?>" id="gps-lat" name="config[gps-lat]" required="required"></td>
+			</tr>
+			
+			<tr>
+				<th scope="row"><label for="gps-lon"><?php echo __('lon') ?> <span class="description"><?php echo __('(GPS Längengrad)')?></span></label></th>
+				<td><input type="text" class="regular-text code" value="<?php echo @$this->arData['gps-lon']; ?>" id="gps-lon" name="config[gps-lon]" required="required"></td>
+			</tr>
+		
+						
+			<tr>
+			<th scope="row"><label for="darstellung"><?php echo __('Darstellungsform') ?> <span class="description"><?php echo __('(erforderlich)')?></span></label></th>
+				<td>
+					<select name="config[darstellung]" id="darstellung">
+						<?php /* Nutzung der verkürzten IF-Abfrage => ?*/ ?>
+						<option <?php echo ((@$this->arData['darstellung'] == '-1')? 'selected="selected"':'');?> value="-1"><?php echo __('Kombinierte Ansicht')?></option>
+						<option <?php echo ((@$this->arData['darstellung'] == 'map')? 'selected="selected"':'');?> value="map"><?php echo __('Kartenansicht')?></option>
+						<option <?php echo ((@$this->arData['darstellung'] == 'table')?'selected="selected"':'');?> value="table"><?php echo __('Tabellenansicht')?></option>
+					</select>
+				</td>
+			</tr>
+		
+			
+		</tbody>
+	</table>
+	
+	<p class="submit"><input type="submit" value="<?php echo __('Einstellungen übernehmen') ?>" class="button-primary" id="submit-config" name="submit-config"></p>
+	</form>
+</div>

@@ -1,0 +1,114 @@
+<?php namespace m1\usv; 
+/**
+* Eingabemaske zum Hinzufügen eines neuen Mitgliederdatensatzes
+*/
+?>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		
+		jQuery('#get-gps-data').bind("click", function() {
+		 
+			jQuery.ajax({
+				type: 'POST',
+				url: "<?php echo SITECOOKIEPATH.'wp-admin'; ?>/admin.php?page=companion_map-Mitglieder&action=get_gps_data&noheader=1",
+				data: {
+					strasse: jQuery("#strasse").val(),
+					plz: jQuery("#plz").val(),
+					ort: jQuery("#ort").val()
+				},
+				success: function(data)
+				{
+					var result = data.split(',');
+					var lat = result[0];
+					var long = result[1];
+					
+					jQuery("#gps-lat").attr('value',lat);
+					jQuery("#gps-lon").attr('value',long);
+				}
+			});
+			
+			return false;
+		
+		});
+		
+	});
+</script>
+
+<div class="wrap">
+<div class="icon32" id="icon-users"><br></div><h2 id="add-new-user"><?php echo __('Neue Filiale hinzufügen')?></h2>
+
+<div id="ajax-response"></div>
+
+<p><?php echo __('Erstellung Sie hier einen neuen Standort. Bitte beachten Sie, dass alle Pflichtfelder ausgefüllt sind.') ?></p>
+
+<p><?php $this->drawMessages(); ?></p>
+
+<form id="createuser" name="createuser" method="post" onSubmit="addFormular()" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Mitglieder&action=save'; ?>">
+<table class="form-table">
+	<tbody>
+		<tr class="form-field form-required">
+			<th scope="row"><label for="unternehmen"><?php echo __('Filiale') ?><span class="description"><?php echo __(' (erforderlich)') ?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars(@$_REQUEST['unternehmen']); ?>" id="" name="unternehmen" required="required" placeholder="Firma Mustermann"></td>
+		</tr>
+		
+		<tr class="form-field form-required">
+			<th scope="row"><label for="ansprechpartner"><?php echo __('Ansprechpartner') ?> <span class="description"><?php echo __(' (erforderlich)') ?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars(@$_REQUEST['ansprechpartner']); ?>" id="" name="ansprechpartner" required="required" placeholder="Mustermann"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="strasse"><?php echo __('Adresse') ?><span class="description"><?php echo __(' (für GPS-Koordinaten)') ?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars(@$_REQUEST['strasse']); ?>" id="strasse" name="strasse" placeholder="Musterstrasse"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="plz"><?php echo __('PLZ') ?><span class="description"><?php echo __(' (für GPS-Koordinaten)') ?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars(@$_REQUEST['plz']); ?>" id="plz" name="plz" pattern="[0-9]{5}" placeholder="99999"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="ort"><?php echo __('Ort') ?><span class="description"><?php echo __(' (für GPS-Koordinaten)')?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars(@$_REQUEST['ort']); ?>" id="ort" name="ort" placeholder="Musterstadt"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="telefon"><?php echo __('Telefon') ?> <span class="description"><?php echo __(' (erforderlich)')?></span></label></th>
+			<td><input type="tel" value="<?php echo htmlspecialchars(@$_REQUEST['telefon']); ?>" id="" name="telefon" pattern="^[0-9-/+s() ]*$" placeholder="+49 123 456 789" required="required"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="fax"><?php echo __('Fax') ?></label></th>
+			<td><input type="tel" value="<?php echo htmlspecialchars(@$_REQUEST['fax']); ?>" id="" name="fax" pattern="^[0-9-/+s() ]*$" placeholder="+49 123 456 789" ></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="email"><?php echo __('E-Mail')?></label></th>
+			<td><input type="email" value="<?php echo htmlspecialchars(@$_REQUEST['email']); ?>" id="" name="email" placeholder="mustermann@mail.com"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="www"><?php echo __('Website') ?></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars(@$this->arData['www']); ?>" id="" name="www" placeholder="www.mustermann.com"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<td><button id="get-gps-data" class="button-primary"><?php echo __('GPS Daten abrufen')?></button></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="gps-lat"><?php echo __('GPS-Latitude')?> <span class="description"><?php echo __(' (Breitengrad)')?></span></label></th>
+			<td width="150"><input type="text" value="<?php echo @$_REQUEST['gps-lat']; ?>" id="gps-lat" name="gps-lat"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="gps-lon"><?php echo __('GPS-Longitude')?> <span class="description"><?php echo __(' (Längengrad)')?></span></label></th>
+			<td><input type="text" value="<?php echo @$_REQUEST['gps-lon']; ?>" id="gps-lon" name="gps-lon"></td>
+			<td></td>
+		</tr>
+
+	</tbody>
+</table>
+
+<p class="submit"><input type="submit" value="<?php echo __('Neuen Standort hinzufügen')?>" class="button-primary" id="new-mtgl" name="new-mtgl"></p>
+</form>
+</div>

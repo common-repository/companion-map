@@ -1,0 +1,142 @@
+<?php namespace m1\usv; 
+/**
+*	Maske f�r die Zuordnung bzw. erneute Eingabe von fehlenden Daten beim Import
+*/
+?>
+
+<div class="wrap">
+	<div class="icon32" id="icon-users"><br></div><h2 id="add-new-user"><?php echo __('Neuer CSV - Import')?></h2>
+	
+	<div id="ajax-response"></div>
+	
+	<p><?php echo __('Ordnen Sie die zu importierenden Daten den Feldern zu')?></p>
+	<p><?php $this->drawMessages(); ?></p>
+	
+	<form id="createuser" name="createuser" method="post" accept-charset="UTF-8" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Import&action=save'; ?>" >
+	<table class="form-table">
+		<tbody>
+			<tr class="form-field form-required">
+				<th scope="row"><label for="unternehmen"><?php echo __('Filiale') ?> <span class="description"><?php echo __('( erforderlich)') ?></span></label></th>
+				<td>
+					<select id="unternehmen" name="unternehmen">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field form-required">
+				<th scope="row"><label for="ansprechpartner"><?php echo __('Ansprechpartner') ?>' <span class="description"><?php echo __('( erforderlich)') ?></span></label></th>
+				<td>
+					<select id="ansprechpartner" name="ansprechpartner">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="strasse"><?php echo __('Adresse') ?> </label></th>
+				<td>
+					<select id="strasse" name="strasse">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="plz"><?php echo __('PLZ') ?> </label></th>
+				<td>
+					<select id="plz" name="plz">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="ort"><?php echo __('Ort') ?></label></th>
+				<td>
+					<select id="ort" name="ort">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="telefon"><?php echo __('Telefon')?> <span class="description"><?php echo __('( erforderlich)') ?></span></label></th>
+				<td>
+					<select id="telefon" name="telefon">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="fax"><?php echo __('Fax') ?> </label></th>
+				<td>
+					<select id="fax" name="fax">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="email"><?php echo __('E-Mail') ?></label></th>
+				<td>
+					<select id="email" name="email">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="www"><?php echo __('Website')?> </label></th>
+				<td>
+					<select id="www" name="www">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="gps-lat"><?php echo __('GPS-Latitude') ?>' <span class="description"><?php echo __('(GPS Breitengrad)') ?></span></label></th>
+				<td >
+					<select id="gps-lat" name="gps-lat">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="form-field">
+				<th scope="row"><label for="gps-lon"><?php echo __('GPS-Longitude') ?>' <span class="description"><?php echo __('(GPS Längengrad)') ?></span></label></th>
+				<td>
+					<select id="gps-lon" name="gps-lon">
+						<option value="-1" selected="selected"><?php echo __('--Feld auswählen--') ?></option>
+						<?php foreach($this->arFelder as $key=>$value) { ?><option value="<?php echo $key; ?>"><?php echo $value; }?></option>
+					</select>
+				</td>
+			</tr>
+	
+			<tr>
+				<td align="right"><input type="checkbox" name="first-line" value="1" checked="checked" /></td>
+				<td><?php echo __('Die erste Zeile wurde nicht importieren?')?><br />
+				<?php echo __('In der Regel enthält die erste Zeile die Spaltennamen der Tabelle.') ?></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<p class="submit"><input type="submit" value="<?php echo __('Daten importieren')?> " class="button-primary" id="csv-import" name="csv-import"></p>
+	
+	<input type="hidden" name="csv_file_name" value="<?php echo $this->tmp_file_name; ?>" />
+	<input type="hidden" name="csv_seperator" value="<?php echo $this->csv_separator; ?>" />
+	
+	</form>
+</div>

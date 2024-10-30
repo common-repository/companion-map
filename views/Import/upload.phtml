@@ -1,0 +1,51 @@
+<?php namespace m1\usv; 
+/*
+* Uploadformular für csv-Dateien
+*/
+?>
+
+<div class="wrap">
+<div class="icon32" id="icon-users"><br></div><h2 id="add-new-user"><?php echo __('Neuer CSV - Import')?></h2>
+
+
+<div id="ajax-response"></div>
+
+<p><?php echo __('Sie haben nun die Möglichkeit, eine csv-Datei hochzuladen und damit die einen oder mehrere Standortdatensätze gleichzeitig zu hinterlegen.')?></p>
+
+<p><?php $this->drawMessages(); ?></p>
+	
+	<form id="form_upload" name="csv-upload" method="POST" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Import&action=form" accept-charset="UTF-8" enctype="multipart/form-data'; ?>">
+		<fieldset class="csv-upload-form">
+			<legend><?php echo __('CSV Datei:')?></legend>
+			<table class="upload-form-table">
+			<tr>
+				<td><label class="csv-upload-label" for="csv_file"><?php echo __('Pfad zur CSV Datei:') ?></label></td>
+				<td><input type="file" maxlength="255" size="50" class="fileinput" id="csv_file" name="csv_file" value="" /></td>
+			</tr>
+			
+			<tr>
+				<td><label class="csv-upload-label" for="csv_file"><?php echo __('Trennzeichen eingeben:') ?></label></td>
+				<td><input class="form-field" type="text" maxlength="1" size="8" class="text"  name="csv_sep" value=";[Standard]"/></td>
+			</tr>
+		</table>
+
+		</fieldset>
+		
+		<fieldset class="import-info-block">
+			
+			<legend><?php echo __('Bitte beachten Sie folgenden Hinweis') ?></legend>
+			<p><?php echo __('
+			Bitte importieren Sie <strong>ausschließlich</strong> CSV-Dateien, die mit <strong>"," (Komma)</strong> oder <strong>";" (Semikolon)</strong> getrennt sind. Die Erfahrungen hat gezeigt, dass dieses Vorgehen weniger störungsanfällig und die Erfolgschance eines erfolgreichen Uploads wesentlich höher ist, als die Trennungsmethode mit anderen Zeichen.   	
+			') ?><br/><br/>
+			<strong><?php echo __('*Bitte geben Sie die Trennungszeichen ohne Hochkommas ein! Beachten Sie, dass die Datei UTF-8 fomatiert ist!') ?></strong>
+			<br/><br/><?php echo __('
+			Trotz der Berücksichtigung dieser Vorgaben können, aufgrund der starken Abhängigkeit der Formatierung der Quelldatei, Probleme auftreten. Daher ist es uns nicht möglich, eine Garantie für einen optimalen Dateiimport zu geben. Im nächsten Schritt wird Ihnen die eingelesene Datei dargestellt. Bitte prüfen Sie den angezeigten Inhalt gründlich und korrigieren Sie eventuell auftretene Fehler umgehend.  
+			') ?><br /><br /><?php echo __(' 
+			Eine formatierte Vorlage für die CSV-Datei finden Sie ')?><a class="csv-example" href="<?php echo SITECOOKIEPATH; ?>wp-content/plugins/companion-map/gfx/muster.csv"><?php echo __('hier')?></a><?php echo __('.')?> 
+			</p>
+			
+		</fieldset>
+
+		<p class="submit"><input type="submit" value="<?php echo __('Daten einlesen')?>" class="button-primary" id="csv-import" name="csv-import"></p>
+	</form>
+</div>

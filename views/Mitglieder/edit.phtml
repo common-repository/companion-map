@@ -1,0 +1,116 @@
+<?php namespace m1\usv; 
+/**
+* Bearbeitungsmaske eines bereits bestehenden Mitgliederdatensatzes
+*/
+?>
+
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		
+		jQuery('#get-gps-data').bind("click", function() {
+		 
+			jQuery.ajax({
+				type: 'POST',
+				url: "<?php echo SITECOOKIEPATH.'wp-admin'; ?>/admin.php?page=companion_map-Mitglieder&action=get_gps_data&noheader=1",
+				data: {
+					strasse: jQuery("#strasse").val(),
+					plz: jQuery("#plz").val(),
+					ort: jQuery("#ort").val()
+				},
+				success: function(data)
+				{
+					var result = data.split(',');
+					var lat = result[0];
+					var lng = result[1];
+					
+					jQuery("#gps-lat").attr('value',lat);
+					jQuery("#gps-lon").attr('value',lng);
+				}
+			});
+			
+			return false;
+		
+		});
+		
+	});
+</script>
+
+
+<div class="wrap">
+<div class="icon32" id="icon-users"><br></div><h2 id="edit-user"><?php echo __('Filiale bearbeiten')?></h2>
+
+<div id="ajax-response"></div>
+<p><?php echo __('Bearbeiten Sie hier die Daten eines bereits hinterlegten Standorts.')?><br /><?php echo __('Bitte beachten Sie, dass alle Pflichtfelder ausgefüllt sind.')?></p>
+
+<p><?php $this->drawMessages(); ?></p>
+
+<form id="createuser" name="edituser createuser" method="post" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Mitglieder&action=update'; ?>">
+<table class="form-table">
+	<tbody>
+		<tr class="form-field form-required">
+			<th scope="row"><label for="unternehmen"><?php echo __('Filiale')?><span class="description"><?php echo __(' (erforderlich)')?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars($this->arData['unternehmen']); ?>" id="" name="unternehmen" required="required"></td>
+		</tr>
+		
+		<tr class="form-field form-required">
+			<th scope="row"><label for="ansprechpartner"><?php echo __('Ansprechpartner')?><span class="description"><?php echo __(' (erforderlich)')?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars($this->arData['ansprechpartner']); ?>" id="" name="ansprechpartner" required="required"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="strasse"><?php echo __('Adresse')?><span class="description"><?php echo __(' (für GPS-Koordinaten)')?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars($this->arData['strasse']); ?>" id="strasse" name="strasse"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="plz"><?php echo __('PLZ')?><span class="description"><?php echo __(' (für GPS-Koordinaten)')?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars($this->arData['plz']); ?>" id="plz" name="plz" pattern="[0-9]{5}"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="ort"><?php echo __('Ort')?><span class="description"><?php echo __(' (für GPS-Koordinaten)')?></span></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars($this->arData['ort']); ?>" id="ort" name="ort"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="telefon"><?php echo __('Telefon')?><span class="description"><?php echo __(' (erforderlich)')?></span></label></th>
+			<td><input type="tel" value="<?php echo htmlspecialchars($this->arData['telefon']); ?>" id="" name="telefon" required="required" pattern="^[0-9-/+s() ]*$" ></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="fax"><?php echo __('Fax')?></label></th>
+			<td><input type="tel" value="<?php echo htmlspecialchars($this->arData['fax']); ?>" id="" name="fax" pattern="^[0-9-/+s() ]*$" ></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="email"><?php echo __('E-Mail')?></label></th>
+			<td><input type="email" value="<?php echo htmlspecialchars($this->arData['email']); ?>" id="" name="email"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="www"><?php echo __('Website')?></label></th>
+			<td><input type="text" value="<?php echo htmlspecialchars($this->arData['www']); ?>" id="" name="www"></td>
+		</tr>
+		
+		<tr>
+			<td><button id="get-gps-data" class="button-primary"><?php echo __('GPS Daten abrufen')?></button></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="gps-lat"><?php echo __('GPS-Latitude')?> <span class="description"><?php echo __(' (Breitengrad)')?></span></label></th>
+			<td width="150"><input type="text" value="<?php echo $this->arData['gps-lat']; ?>" id="gps-lat" name="gps-lat"></td>
+		</tr>
+		
+		<tr class="form-field">
+			<th scope="row"><label for="gps-lon"><?php echo __('GPS-Longitude')?><span class="description"><?php echo __(' (Längengrad)')?></span></label></th>
+			<td><input type="text" value="<?php echo $this->arData['gps-lon']; ?>" id="gps-lon" name="gps-lon"></td>
+			<td></td>
+		</tr>
+
+	</tbody>
+</table>
+
+<p class="submit"><input type="submit" value="<?php echo __('Änderungen speichern') ?>" class="button-primary" id="update-mtgl" name="update-mtgl"></p>
+<input type="hidden" id="mtgl_id" name="mtgl_id" value="<?php echo $this->arData['id']; ?>" />
+</form>
+</div>

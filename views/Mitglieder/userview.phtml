@@ -1,0 +1,148 @@
+<?php 
+	/**
+	*	Frontenddarstellung als GoogleMap-Karte
+	*/
+?>
+<?php /* Abfrage, welche Darstellungsart gewählt wurde */
+	
+	if ($this->view['show'] == 'map' || $this->view['show'] == '-1') { 
+
+?>
+	
+	<div class="map-frontend" id="map-frontend">
+		<script type="text/javascript">
+				
+		<?php /* Initialisierung der Karte */ ?>
+		function initialize() {
+	
+			/* Zoomstufen, Mittelpunkt der Karte, Kartentyp MapTypeid */
+			var latlng = new google.maps.LatLng(<?php echo $this->configArray['gps-lat']; ?>, <?php echo $this->configArray['gps-lon']; ?>);
+	
+			/* Kartenobjekt myOptions mit folgenden Eigenschaften*/
+			var myOptions = {
+				zoom: 13,
+		    	center: latlng,
+		    	panControl: true,
+		      	zoomControl: true,
+		      	scaleControl: false,
+		    	mapTypeId: google.maps.MapTypeId.ROADMAP
+		    };
+	
+	
+		    /* Karten erzeugen */		
+		    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		    var infowindow = new google.maps.InfoWindow({ });
+		    		
+		    map.setCenter(new google.maps.LatLng(<?php echo $this->configArray['gps-lat']; ?>, <?php echo $this->configArray['gps-lon']; ?>));
+		    		
+		    <?php $i = 0; foreach($this->arData as $k=>$v) { $i ++;?>
+		
+			<?php /* Markers mit entsprechendem Symbol */ ?>
+			var Marker<?php echo $i; ?> = new google.maps.Marker({
+					map: map,
+					position: new google.maps.LatLng(<?php echo $v['gps-lat']; ?>, <?php echo $v['gps-lon']; ?>),
+					title:<?php echo '"'.$v['unternehmen'].'"'; ?>
+			});
+	
+			/* Listener mit Klickfunktion auf Marker */ 				
+			google.maps.event.addListener(Marker<?php echo $i; ?>, 'click', function() {
+						 
+				var contentString = '<?php
+				    
+					/* Informationsfenster mit Datenausgabe */
+					echo preg_replace("/\r|\n/", "", '<h1 class="firstHeading">'.$v['unternehmen'].'<br /></h1>');
+					echo preg_replace("/\r|\n/", "", '<p class="map-marker">
+						<span class="map-partner"><b>Ansprechpartner: </b>'.$v['ansprechpartner'].'</span>
+					</p>');
+					echo preg_replace("/\r|\n/", "", '<p class="map-marker">
+						<span class="map-street"><b>Straße: </b>'.$v['strasse'].'<br /></span>
+						<span class="map-plz"><b>PLZ/Ort: </b>'.$v['plz'].' '.$v['ort'].'</span>
+					</p>');
+					echo preg_replace("/\r|\n/", "", '<p class="map-marker">
+						<span class="map-tel"><b>Telefon: </b>'.$v['telefon'].'<br /></span>
+						<span class="map-fax"><b id="map-fax">Fax: </b>'.$v['fax'].'</span>
+					</p>');
+					echo preg_replace("/\r|\n/", "", '<p class="map-marker">
+						<span class="map-mail"><b>E-Mail: </b>'.$v['email'].'<br /></span>
+						<span class="map-www"><b>Website: </b>'.$v['www'].'</span>
+					</p>');		    
+			    ?>';
+						 
+				infowindow.setContent(contentString);
+				infowindow.open(map, Marker<?php echo $i; ?>);
+							
+			});
+		
+				<?php } ?>
+		
+		 }
+		  		
+		</script>
+			
+		<script type="text/javascript">
+				
+			jQuery(document).ready(function() {
+				initialize();
+			});
+					
+		</script>
+	
+		<div id="map_canvas"></div>
+		
+	</div>
+
+<?php }?>
+
+<?php	
+	/**
+	*	Frontenddarstellung als Tabelle
+	*/
+?>
+
+
+<?php /* Abfrage, welche Darstellungsart gewählt wurde */
+
+if ($this->view['show'] == 'table' || $this->view['show'] == '-1') { 
+
+?>
+			
+<div class="table-frontend" id="table-frontend">
+	<table class="list-overview">
+	
+		<?php foreach($this->arData as $key=>$value) { ?>
+			<tr>
+				<td valign="top">
+					<p class="table-company"><?php echo $value['unternehmen'] ?></p>
+					<span class="ocker" id="table-partner-fix"><i><?php echo __('Ansprechpartner') ?>:</i></span>
+					<p class="table-variable" id="table-partner-variable"><?php echo $value['ansprechpartner'] ?></p>
+				</td>
+				<td valign="top">
+					<span class="ocker" id="table-adress"><i><?php echo __('Adresse') ?>:</i></span><br />
+					<p class="table-variable" id="table-street-fix"><?php echo $value['strasse'] ?></p>
+					<span class="ocker" id="table-plz"><i><?php echo __('PLZ/Ort') ?>:</i></span>
+					<p class="table-variable" id="table-plz-fix"><?php echo $value['plz'] ?> <?php echo $value['ort'] ?></p>
+				</td>
+				<td valign="top">
+					<span class="ocker" id="table-tel"><i><?php echo __('Telefon') ?>:</i></span><br />
+					<p class="table-variable" id="table-tel-fix"><?php echo $value['telefon'] ?></p>
+					<span class="ocker" id="table-fax"><i><?php echo __('Fax') ?>:</i></span>
+					<p class="table-variable" id="table-fax-fix"><?php echo $value['fax'] ?></p>
+				</td>
+					
+				<?php /* zur verbesserten Darstellung wird das @ zu at umgewandelt */ ?>
+				<td valign="top" nowrap>
+					<span class="ocker" id="table-mail"><i><?php echo __('E-Mail') ?>:</i></span><br />
+					<p class="table-variable" id="table-mail-fix">
+						<a href="mailto:<?php echo $value['email'] ?>">
+							<?php echo str_replace('@', '<br />(at)', $value['email']) ?>
+						</a>
+					</p>
+					<span class="ocker" id="table-www"><i><?php echo __('Website') ?>:</i></span>
+					<p class="table-variable" id="table-www-fix"><?php echo $value['www'] ?></p>
+				</td>
+			</tr>
+			
+		<?php } ?>
+	</table>
+</div>
+<?php } ?>

@@ -1,0 +1,189 @@
+<?php namespace m1\usv; 
+/**
+* Übersicht aller bereits angelegten Mitgliederdatensaetze
+*/
+?>
+
+<div class="wrap nosubsub">
+	<div class="icon32" id="icon-edit">
+		<br>
+	</div>
+		<h2>Übersicht aller Firmen<a class="add-new-h2" href="admin.php?page=companion_map-Mitglieder&action=add"><?php echo __('Firma hinzufügen')?></a> </h2>
+		
+		
+	<?php /* Erfolgs- oder Fehlermeldung */ ?>	
+	<p><?php $this->drawMessages(); ?></p>
+
+	
+	<?php /* Suchfeld */ ?>
+	<form method="post" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Mitglieder&action=index'; ?>" >
+			<p class="search-box">
+				<label for="post-search-input" class="screen-reader-text"><?php echo __('Firma suchen')?></label>
+				<input type="text" value="<?php echo hspc($_REQUEST['search']); ?>" name="search" id="link-search-input" class="search-input-field" >
+				<input type="submit" value="<?php echo __('Firma suchen') ?>" name="searchbtn" id="search-submit" class="button" >
+			</p>		
+	</form>
+
+	<form method="post" action="<?php echo SITECOOKIEPATH.'wp-admin/admin.php?page=companion_map-Mitglieder&action=update&noheader=1'; ?>" >
+		
+		<div class="tablenav top">
+			<div class="alignleft actions">
+					
+				<select name="actiontop">
+					<option selected="selected" value="-1"><?php echo __('Aktion wählen')?></option>
+					<option value="delete"><?php echo __('Löschen')?></option>
+				</select>
+					
+				<input type="submit" value="<?php echo __('übernehmen') ?>" class="button-secondary action" id="doaction" name="">
+				
+			</div>
+					
+			<br class="clear">
+		</div>
+		
+		<table class="wp-list-table widefat fixed bookmarks">
+			<thead>
+				<tr>
+					<th class="manage-column column-cb check-column" id="cb" scope="col">
+						<input type="checkbox">
+					</th>
+				
+					<th class="manage-column column-name sortable desc" id="name" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=unternehmen&amp;order=asc"><span><?php echo __('Firma')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-vertreter sortable desc" id="vertreter" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=ansprechpartner&amp;order=asc"><span><?php echo __('Ansprechpartner')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-adresse sortable desc" id="adresse" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=strasse&amp;order=asc"><span><?php echo __('Straße und Hausnummer')?></span><span class="sorting-indicator"></span></a>
+					</th>
+					
+					<th class="manage-column column-plz sortable desc" id="plz" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=plz&amp;order=asc"><span><?php echo __('Postleitzahl')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-ort sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=ort&amp;order=asc"><span><?php echo __('Ort')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-telefon sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=telefon&amp;order=asc"><span><?php echo __('Telefon')?></span></a>
+					</th>
+					
+					<th class="manage-column column-email sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=email&amp;order=asc"><span><?php echo __('E-Mail')?></span></a>
+					</th>
+					
+					<th class="manage-column column-www sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=www&amp;order=asc"><span><?php echo __('Website')?></span></a>
+					</th>
+				
+				</tr>
+			</thead>
+		
+			<tbody id="the-list">
+				
+				
+				<?php foreach($this->arData as $key=>$value) { ?>
+				<tr valign="middle" class="alternate" id="<?php echo $value['id']; ?>">
+					<th class="check-column" scope="row">
+						<input type="checkbox" value="<?php echo $value['id']; ?>" name="mitgliedcheck[]">
+					</th>
+						<td class="column-name">
+							<strong>
+								<a title="“<?php echo $value['unternehmen']; ?>“ bearbeiten" href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;action=edit&amp;id=<?php echo $value['id']; ?>" class="row-title"><?php echo $value['unternehmen']; ?></a>
+							</strong>
+							<br>
+							<div class="row-actions">
+								<span class="edit">
+									<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;action=edit&amp;id=
+										<?php echo $value['id']; ?>"><?php echo __('Bearbeiten')?>
+									</a> | 
+								</span>
+								<span class="delete">
+										<a onclick="if ( confirm( 'Mitglied \'
+											<?php echo $value['unternehmen']; ?>\' wird gelöscht.\n\'Abbrechen\' zum Abbrechen, \'OK\' zum Löschen.' ) ) { return true;}return false;" href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;action=delete&amp;del_id=
+											<?php echo $value['id']; ?>&noheader=1" class="submitdelete"><?php echo __('Löschen')?>
+										</a>
+									</span>
+							</div>
+						</td>
+						
+						<td class="column-vertreter"><?php echo $value['ansprechpartner']; ?></td>
+						
+						<td class="column-adresse"><?php echo $value['strasse']; ?></td>
+						
+						<td class="column-plz"><?php echo $value['plz']; ?></td>
+						
+						<td class="column-ort"><?php echo $value['ort']; ?></td>
+							
+						<td class="column-tel"><?php echo $value['telefon']; ?></td>
+						
+						<td class="column-email"><?php echo $value['email']; ?></td>
+						
+						<td class="column-email"><?php echo $value['www']; ?></td>
+							
+				</tr>
+			<?php } ?>
+			</tbody>
+				<tfoot>
+				<tr>
+					<th class="manage-column column-cb check-column" id="cb" scope="col">
+						<input type="checkbox">
+					</th>
+				
+					<th class="manage-column column-name sortable desc" id="name" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=unternehmen&amp;order=asc"><span><?php echo __('Firma')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-vertreter sortable desc" id="vertreter" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=ansprechpartner&amp;order=asc"><span><?php echo __('Ansprechpartner')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-adresse sortable desc" id="adresse" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=strasse&amp;order=asc"><span><?php echo __('Straße und Hausnummer')?> </span><span class="sorting-indicator"></span></a>
+					</th>
+					
+					<th class="manage-column column-plz sortable desc" id="plz" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=plz&amp;order=asc"><span><?php echo __('Postleitzahl')?></span><span class="sorting-indicator"></span></a>
+					</th>
+				
+					<th class="manage-column column-ort sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=ort&amp;order=asc"><span><?php echo __('Ort')?></span><span class="sorting-indicator"></span></a>
+					</th>
+					
+					<th class="manage-column column-telefon sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=telefon&amp;order=asc"><span><?php echo __('Telefon')?></span></a>
+					</th>
+					
+					<th class="manage-column column-email sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=email&amp;order=asc"><span><?php echo __('E-Mail')?></span></a>
+					</th>
+					
+					<th class="manage-column column-www sortable desc" id="visible" scope="col">
+						<a href="/wp-admin/admin.php?page=companion_map-Mitglieder&amp;orderby=www&amp;order=asc"><span><?php echo __('Website')?></span></a>
+					</th>
+				</tr>
+			</tfoot>
+		</table>
+		<div class="tablenav bottom">
+			<div class="alignleft actions">
+				
+				<select name="actionbottom">
+					<option selected="selected" value="-1"><?php echo __('Aktion wählen')?></option>
+					<option value="delete"><?php echo __('Löschen')?></option>
+				</select>
+		
+				<input type="submit" value="<?php echo __('Übernehmen')?> " class="button-secondary action" id="doaction" name="">
+				
+			</div>
+		
+			<br class="clear">
+			
+		</div>
+		
+		<div id="ajax-response"></div>
+	</form>
+</div>

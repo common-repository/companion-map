@@ -1,0 +1,66 @@
+@CHARSET "ISO-8859-1";
+/**
+ * Companion-Map css
+ * author: maennchen1
+ */
+ 
+/* Alles zurücksetzen */
+html, textarea, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, font, img, ins, kbd, q, s, samp, small, strike, strong, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    border:0 none;
+    margin:0;
+    outline:0 none;
+    padding:0;
+}
+
+/* Globale Elemente */
+html, body { height:100%; width:100%; font-family:'Open Sans', sans-serif; font-size:13px; color:#444; line-height:1.4em; }
+
+/* Typografie*/
+h1, h2, h3 { display:block; color:#23282d; font-size:23px; font-weight:400px; line-height:30px; margin:0px; padding:9px 15px 4px 0; }
+h1 { font-size:1.5rem; }
+h2 { font-size:1.3rem; }
+h3 { font-size:1.2rem; }
+
+p { margin:1em 0; }
+  
+/* Neuen Datensatz hinzufügen */
+#get-gps-data {	height:30px; width:285%; margin:5px; }
+.button-primary {	padding:30px 0; }
+
+/* Nachrichten */
+.posMessage { color:green; }
+.negMessage { color:red; }
+
+/* Konfiguration im Backend */ 
+.frontend_design_quest { padding:30px 0; }
+.frontend_design_quest .select { margin-right:3.2rem; }
+#button-google { margin:20px 20px 20px 0;  }
+
+/* Übersicht im Backend*/
+#doaction, #doaction2, #post-query-submit { margin:1px 8px 0 20px; }
+.tablenav .actions { padding:10px 0; }
+.add-new-h2 { margin-left:10px !important; }
+.wp-list-table widefat fixed bookmarks { border-spacing:0px; }
+
+/* csv-Import im Backend*/
+.import-info-block { padding:10px; margin-bottom:15px; border:1px solid #cccccc; }
+.import-info-block p { width:750px; }
+.csv-upload-form { padding:10px; margin-bottom:15px; border:1px solid #cccccc }
+.csv-upload-label { width:200px; }
+.upload-form-table { border-spacing:15px; }
+
+/*
+* Frontendeinstellungen
+*/
+/* Kartenansicht im Frontend*/
+.gmnoprint img  { max-width:none; }
+.map-frontend { font-size:75%; color:#666666; margin:15px 0; }
+#map_canvas { width:100%; height:400px; border:2px solid #BC810A; position:relative; overflow:hidden; background-color:#e5e3df; }
+.map-marker { line-height:125%; }
+.firstHeading { font-size:14px !important; }
+
+/* Tabellenansicht im Frontend */
+.table-frontend { margin-top:15px; }
+.list-overview { border:0; width:100%; cellpadding:0; cellspacing:0; }
+.table-company { font-weight:bold; }
+table.list-overview td { border-top:1px dotted #BC810A; padding:5px 3px; line-height:150%; }
